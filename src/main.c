@@ -4,6 +4,8 @@
 #include "../include/graphic.h"
 #include "../include/opencl.h"
 
+extern void do_cl(cl_prop prop, img read_img);
+
 int main(int argc, char *argv[])
 {
   const int pid = 1, did = 0;
@@ -24,7 +26,11 @@ int main(int argc, char *argv[])
   get_devices(pid, &prop);
   set_kernels(did, &prop);
 
+  do_cl(prop, read_img);
+
   /* OpenCLプロパティの解放 */
   release_cl_properties(&prop);
+
+  release_img(&read_img);
   return 0;
 }

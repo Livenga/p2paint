@@ -54,7 +54,10 @@ int pnread(const char *path,
   printf("PNG Bit depth\t%d\n", bit_depth);
 #endif
 
-  int i;
+  int i, j, k;
+  _img->ldata = (uchar *)calloc(
+      height * width * _img->bit_size, sizeof(uchar));
+
   _img->data = (uchar **)calloc(
       height, sizeof(uchar *));
   for(i = 0; i < height; i++)
@@ -67,6 +70,15 @@ int pnread(const char *path,
   png_destroy_info_struct(png_ptr, &info_ptr);
   png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 
+  int img_pos;
+  for(i = 0; i < height; i++) {
+    for(j = 0; j < width; j++) {
+      img_pos = i * width + j;
+
+      for(k = 0; k < _img->colors; k++)
+        _img->ldata[img_pos * 3 + k] = _img->data[i][j * 3 + k];
+    }
+  }
   fclose(png_fp);
 
   return 0;

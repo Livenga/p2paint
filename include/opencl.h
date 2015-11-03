@@ -5,6 +5,8 @@
 #include <CL/cl.h>
 #endif
 
+#define CL_READ_COPY (CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR)
+
 typedef struct _kerenl_code {
   size_t count;
   unsigned char **paths;
@@ -30,6 +32,11 @@ typedef struct _cl_prop {
   cl_kernel kernel;
 
 } cl_prop;
+
+/* k-means法 算出に使用 */
+typedef struct _cluster_args {
+  cl_mem img_info;
+} cluster_args;
 
 /* src/cl/cl_plat_dev.c */
 extern cl_int numof_platforms(cl_prop *prop);

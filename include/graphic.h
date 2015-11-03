@@ -13,10 +13,14 @@ typedef struct _img {
 
   size_t width, height;
 
+  uchar *ldata;
   uchar **data;
 } img;
 
 /* src/graphic/g_png.c */
 extern int pnread(const char *path,
     img *_img);
+
+/* src/graphic/g_util.c */
+extern void release_img(img *_img);
 #endif

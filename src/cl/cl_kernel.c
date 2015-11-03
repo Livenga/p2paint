@@ -22,7 +22,7 @@ cl_int set_kernels(const int did,
       (const char **)prop->code.codes,
       NULL, &status);
 
-  const char *options = NULL;
+  const char *options = "-I ./include/";
   status = clBuildProgram(prop->program, prop->num_devices,
       (const cl_device_id *)prop->devices,
       options, NULL, NULL);
