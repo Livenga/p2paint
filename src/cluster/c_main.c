@@ -6,9 +6,17 @@
 #include "../../include/opencl.h"
 #include "../../include/cluster.h"
 
-#define K 5
+#define K 11
 //#define K 10
 #define MAX_RANGE 200
+
+/* src/graphic/g_write.c */
+extern int
+pnwrite_from_cluster(const char *path,
+                     int width,
+                     int height,
+                     p_cluster *_cluster,
+                     unsigned short *dist);
 
 void set_image_info(img _img, img_info *info);
 
@@ -80,7 +88,11 @@ void run_k_means(cl_prop prop, img read_img) {
     sprintf(image_path, "k_output/k%03d.png", k);
     pnwrite_from_dist(image_path, read_img.width, read_img.height, k,
         k2, read_img.data);
+
   }
+  sprintf(image_path, "class.png");
+  pnwrite_from_cluster(image_path, read_img.width, read_img.height,
+      cls_k2, k2);
 
   clReleaseMemObject(cl_cls_arg.k);
   clReleaseMemObject(cl_cls_arg.img_info);

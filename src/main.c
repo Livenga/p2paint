@@ -4,7 +4,9 @@
 #include "../include/graphic.h"
 #include "../include/opencl.h"
 
-extern void run_k_means(cl_prop prop, img read_img);
+extern void
+run_k_means(cl_prop prop,
+            img read_img);
 
 int main(int argc, char *argv[])
 {
