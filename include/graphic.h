@@ -21,8 +21,22 @@ typedef struct _img {
 extern int // PNG読み込み
 pnread(const char *path,
        img *_img);
+/* src/graphic/g_write.c */
+extern int
+pnwrite_from_dist(const char *path,
+                  int width,
+                  int height,
+                  int k,
+                  unsigned short *dist,
+                  uchar **data);
 
 /* src/graphic/g_util.c */
 extern void // 構造体img の解放
 release_img(img *_img);
+
+
+/* src/graphic/g_c2csv.c */
+extern int // 画像データをcsvに変換
+save_csv(const char *path,
+         img _img);
 #endif

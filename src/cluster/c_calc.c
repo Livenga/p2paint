@@ -6,7 +6,7 @@
 #include "../../include/cluster.h"
 
 /* 所属クラスタの中心地計算 */
-void calc_cluster(const int k,
+void calc_cluster_center(const int k,
     const img read_img,
     const ushort *dist,
     p_cluster *_cluster) {
@@ -22,9 +22,15 @@ void calc_cluster(const int k,
       position = i * read_img.width + j;
 
       if(k == dist[position]) {
+#if 1
         sum_r += read_img.data[i][j * 3 + 0];
         sum_g += read_img.data[i][j * 3 + 1];
         sum_b += read_img.data[i][j * 3 + 2];
+#else
+        sum_r += read_img.ldata[position * 3 + 0];
+        sum_g += read_img.ldata[position * 3 + 1];
+        sum_b += read_img.ldata[position * 3 + 2];
+#endif
         ++cnt;
       }
 
@@ -41,4 +47,17 @@ void calc_cluster(const int k,
     _cluster->g = 0;
     _cluster->b = 0;
   }
+}
+
+int conf_cluster_center(const int k,
+    p_cluster *_cluster) {
+  int i, conf = 0;
+
+  for(i = 0; i < k - 1; i++) {
+    conf += _cluster[i].r == _cluster[i + 1].r;
+    conf += _cluster[i].g == _cluster[i + 1].g;
+    conf += _cluster[i].b == _cluster[i + 1].b;
+  }
+
+  return ((conf == 0) ? 0 : 1);
 }

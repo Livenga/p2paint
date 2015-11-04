@@ -6,6 +6,7 @@
 #endif
 
 #define CL_READ_COPY (CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR)
+#define CL_RW_COPY   (CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR)
 
 typedef struct _kerenl_code {
   size_t count;
@@ -37,6 +38,7 @@ typedef struct _cl_prop {
 typedef struct _cluster_args {
   cl_mem k;
   cl_mem img_info;
+  cl_mem cls_center;
   cl_mem dist;
   cl_mem data;
 } cluster_args;

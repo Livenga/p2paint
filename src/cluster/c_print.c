@@ -8,7 +8,18 @@ void cluster_print(const int k,
   int i;
   for(i = 0; i < k; i++) {
     printf("Cluster No.%2d\n", i);
-    printf("R:G:B\t%u\t%u\t%u\n",
+    printf("R:G:B\t%lu\t%lu\t%lu\n",
         _cluster[i].r, _cluster[i].g, _cluster[i].b);
   }
 }
+
+void class_print(int width,
+    int height,
+    ushort *dist) {
+  int i, j;
+
+  for(i = 0; i < height; i++)
+    for(j = 0; j < width; j++)
+      printf("%d ", dist[i * width + j]);
+}
+

@@ -4,17 +4,18 @@
 #include "../include/graphic.h"
 #include "../include/opencl.h"
 
-extern void do_cl(cl_prop prop, img read_img);
+extern void run_k_means(cl_prop prop, img read_img);
 
 int main(int argc, char *argv[])
 {
-  const int pid = 0, did = 0;
+  const int pid = 1, did = 0;
   cl_prop prop;
   img read_img;
 
   srand((unsigned)time(NULL));
   /* 画像ファイル(PNG)の読み込み */
   pnread("imgs/img00.png", &read_img);
+  //save_csv("img00.csv", read_img);
 
   /* Kernelコードの読み込み */
   get_kernel_paths("src/kernel", &prop.code);
@@ -27,7 +28,7 @@ int main(int argc, char *argv[])
   get_devices(pid, &prop);
   set_kernels(did, &prop);
 
-  do_cl(prop, read_img);
+  run_k_means(prop, read_img);
 
   /* OpenCLプロパティの解放 */
   release_cl_properties(&prop);
