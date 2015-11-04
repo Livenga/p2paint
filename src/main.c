@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <time.h>
 #include "../include/graphic.h"
 #include "../include/opencl.h"
 
@@ -8,10 +8,11 @@ extern void do_cl(cl_prop prop, img read_img);
 
 int main(int argc, char *argv[])
 {
-  const int pid = 1, did = 0;
+  const int pid = 0, did = 0;
   cl_prop prop;
   img read_img;
 
+  srand((unsigned)time(NULL));
   /* 画像ファイル(PNG)の読み込み */
   pnread("imgs/img00.png", &read_img);
 
