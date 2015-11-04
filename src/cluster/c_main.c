@@ -22,12 +22,12 @@ void set_image_info(img _img, img_info *info);
 
 void run_k_means(cl_prop prop, img read_img) {
   const size_t img_size = read_img.width * read_img.height;
-  int num_k, k;
+  int num_k = K, k;
 
-  cl_int status;
+  cl_int status;           // エラー状態
+  size_t global_size[2];   // 並列次元数
   img_info info;           // 画像情報
   cluster_args cl_cls_arg; // Kernel引数
-  size_t global_size[2];
 
   ushort *k2;          // 分類
   p_cluster cls_k2[K]; // クラスタ
@@ -41,7 +41,7 @@ void run_k_means(cl_prop prop, img read_img) {
       calc_cluster_center(k, read_img, (const ushort *)k2, &cls_k2[k]);
   } while(conf_cluster_center(K, cls_k2) == 0);
 
-  num_k = K;
+  /* OpenCL Kernel関数の引数設定 */
   cl_cls_arg.k = clCreateBuffer(prop.context,
       CL_READ_COPY, sizeof(int), (void *)&num_k, &status);
   cl_cls_arg.img_info = clCreateBuffer(prop.context,
@@ -52,14 +52,15 @@ void run_k_means(cl_prop prop, img read_img) {
       CL_MEM_READ_WRITE, sizeof(ushort) * img_size, (void *)NULL, &status);
   cl_cls_arg.data = clCreateBuffer(prop.context,
       CL_READ_COPY, sizeof(uchar) * img_size * 3, (void *)read_img.ldata, NULL);
-
-  global_size[0] = read_img.width;
-  global_size[1] = read_img.height;
   clSetKernelArg(prop.kernel, 0, sizeof(cl_mem), &cl_cls_arg.k);
   clSetKernelArg(prop.kernel, 1, sizeof(cl_mem), &cl_cls_arg.img_info);
   clSetKernelArg(prop.kernel, 2, sizeof(cl_mem), &cl_cls_arg.cls_center);
   clSetKernelArg(prop.kernel, 3, sizeof(cl_mem), &cl_cls_arg.dist);
   clSetKernelArg(prop.kernel, 4, sizeof(cl_mem), &cl_cls_arg.data);
+
+  /* 次元数指定 */
+  global_size[0] = read_img.width;
+  global_size[1] = read_img.height;
 
   int count = 0;
   do {
@@ -76,12 +77,11 @@ void run_k_means(cl_prop prop, img read_img) {
         cl_cls_arg.dist, CL_TRUE, 0, sizeof(ushort) * img_size,
         (void *)k2, 0, NULL, NULL);
     
-    for(k = 0; k < K; k++)
+    for(k = 0; k < K; k++) // 中心値の再計算
       calc_cluster_center(k, read_img, (const ushort *)k2, &cls_k2[k]);
-    //cluster_print(K, cls_k2);
+
   } while(++count != MAX_RANGE);
   cluster_print(K, cls_k2);
-  //class_print(read_img.width, read_img.height, k2);
 
   char image_path[1024];
   for(k = 0; k < K; k++) {
@@ -90,9 +90,11 @@ void run_k_means(cl_prop prop, img read_img) {
         k2, read_img.data);
 
   }
+#if 0
   sprintf(image_path, "class.png");
   pnwrite_from_cluster(image_path, read_img.width, read_img.height,
       cls_k2, k2);
+#endif
 
   clReleaseMemObject(cl_cls_arg.k);
   clReleaseMemObject(cl_cls_arg.img_info);
