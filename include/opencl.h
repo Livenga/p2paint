@@ -35,25 +35,33 @@ typedef struct _cl_prop {
 
 /* k-means法 算出に使用 */
 typedef struct _cluster_args {
+  cl_mem k;
   cl_mem img_info;
+  cl_mem dist;
+  cl_mem data;
 } cluster_args;
 
 /* src/cl/cl_plat_dev.c */
 extern cl_int numof_platforms(cl_prop *prop);
 extern cl_int get_platforms(cl_prop *prop);
-extern cl_int numof_devices(const int pid,
-    cl_prop *prop);
-extern cl_int get_devices(const int pid,
-    cl_prop *prop);
+extern cl_int
+numof_devices(const int pid,
+              cl_prop *prop);
+extern cl_int
+get_devices(const int pid,
+            cl_prop *prop);
 
 /* src/cl/cl_kernel.c */
-extern cl_int set_kernels(const int did,
-    cl_prop *prop);
+extern cl_int
+set_kernels(const int did,
+            cl_prop *prop);
 
 /* src/cl/cl_code.c */
-extern int get_kernel_paths(const char *path,
-    kcode *code);
-extern int read_kernel_code(kcode *code);
+extern int // カーネルコードのパス取得
+get_kernel_paths(const char *path,
+                 kcode *code);
+extern int // カーネルコードの読み込み
+read_kernel_code(kcode *code);
 
 /* src/cl/cl_util.c */
 extern void release_cl_properties(cl_prop *prop);

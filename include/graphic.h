@@ -18,9 +18,11 @@ typedef struct _img {
 } img;
 
 /* src/graphic/g_png.c */
-extern int pnread(const char *path,
-    img *_img);
+extern int // PNG読み込み
+pnread(const char *path,
+       img *_img);
 
 /* src/graphic/g_util.c */
-extern void release_img(img *_img);
+extern void // 構造体img の解放
+release_img(img *_img);
 #endif
