@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
   srand((unsigned)time(NULL));
   /* 画像ファイル(PNG)の読み込み */
-  pnread("imgs/img00.png", &read_img);
+  pnread("imgs/img01.png", &read_img);
   //save_csv("img00.csv", read_img);
 
   /* Kernelコードの読み込み */
