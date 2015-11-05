@@ -16,6 +16,13 @@ cvalloc(int width,  /* 横幅 */
         int height, /* 縦幅 */
         int colors  /* 色サイズ */);
 
+/* src/canvas/cv_draw.c */
+// *cv_paintにcv_targetより円を描画
+extern void
+draw_circuit(int r,            /* 円半径 */
+             canvas *cv_paint, /* Paint  Canvas */
+             canvas cv_target  /* Target Canvas */);
+
 /* src/canvas/cv_util.c */
 extern double
 cv_finish_init(canvas cv);

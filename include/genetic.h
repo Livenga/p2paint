@@ -16,4 +16,8 @@
 #define INIT_PATCH_SIZE (80) /* 初期個体生成  */
 #define PATCH_SIZE      (40) /* GAパラメータ  */
 
+/* src/genetic/gn_calc.c */
+extern int
+minof_fitness(int population,
+              double *fitness);
 #endif
