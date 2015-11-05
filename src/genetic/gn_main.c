@@ -17,6 +17,7 @@ draw_circuit(int x0,
 
 void run_genetic(cl_prop prop,
     img target) {
+  size_t cnt_generation;
   int i, R;
   int x0, y0; // 円描画位置
   canvas pr_canvas[POPULATION_SIZE], ch_canvas[CHILDREN_SIZE];
@@ -42,6 +43,11 @@ void run_genetic(cl_prop prop,
     pnwrite_from_canvas(output, pr_canvas[i]);
   }
 
+  cnt_generation = 0;
+  do {
+  } while(++cnt_generation != NUMBER_OF_GENERATION);
+
+  printf("[終了世代] %d\n", cnt_generation);
 
   /* Canvas領域の解放(後処理) */
   //release_canvas(POPULATION_SIZE, pr_canvas);
