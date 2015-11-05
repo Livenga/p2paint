@@ -43,9 +43,15 @@ void calc_cluster_center(const int k,
     _cluster->b = sum_b / cnt;
   }
   else {
+#if 0
     _cluster->r = _cluster->r;
     _cluster->g = _cluster->g;
     _cluster->b = _cluster->b;
+#else
+    _cluster->r = 0;
+    _cluster->g = 0;
+    _cluster->b = 0;
+#endif
   }
 }
 
