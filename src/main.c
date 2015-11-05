@@ -19,7 +19,7 @@ run_genetic(cl_prop prop,
 
 int main(int argc, char *argv[])
 {
-  const int pid = 0, did = 0;
+  const int pid = 1, did = 0;
   cl_prop prop;
   img read_img, paint_img;
 
@@ -28,11 +28,9 @@ int main(int argc, char *argv[])
 
   srand((unsigned)time(NULL));
   /* 画像ファイル(PNG)の読み込み */
-  //pnread("imgs/img00.png", &read_img);
-  pnread("imgs/img06.png", &read_img);
-  //pnread("imgs/shout.png", &paint_img);
-  pnread("imgs/img00.png", &paint_img);
-  save_csv("img00.csv", read_img);
+  pnread("imgs/img00.png", &read_img);
+  pnread("imgs/shout.png", &paint_img);
+  //save_csv("img00.csv", read_img);
 
   /* Kernelコードの読み込み */
   get_kernel_paths("src/kernel", &prop.code);
