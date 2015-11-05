@@ -41,7 +41,7 @@ void run_k_means(cl_prop prop, img read_img) {
       calc_cluster_center(k, read_img, (const ushort *)k2, &cls_k2[k]);
   } while(conf_cluster_center(K, cls_k2) == 0);
 
-  /* OpenCL Kernel関数の引数設定 */
+  /* ++++ OpenCL Kernel関数の引数設定 ++++ */
   cl_cls_arg.k = clCreateBuffer(prop.context,
       CL_READ_COPY, sizeof(int), (void *)&num_k, &status);
   cl_cls_arg.img_info = clCreateBuffer(prop.context,
@@ -61,7 +61,9 @@ void run_k_means(cl_prop prop, img read_img) {
   /* 次元数指定 */
   global_size[0] = read_img.width;
   global_size[1] = read_img.height;
+  /* ++++ OpenCL ++++ */
 
+  /* 終了条件を回数でなく, クラスタの更新停止も追加(ゆくゆくは) */
   int count = 0;
   do {
     status = clEnqueueWriteBuffer(prop.queue, cl_cls_arg.cls_center,
@@ -90,8 +92,8 @@ void run_k_means(cl_prop prop, img read_img) {
         k2, read_img.data);
 
   }
-#if 0
-  sprintf(image_path, "class.png");
+#if 1
+  sprintf(image_path, "cluster_k_%02d.png", K);
   pnwrite_from_cluster(image_path, read_img.width, read_img.height,
       cls_k2, k2);
 #endif

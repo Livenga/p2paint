@@ -4,19 +4,24 @@
 #include "../include/graphic.h"
 #include "../include/opencl.h"
 
+/* src/cluster/c_main.c */
 extern void
 run_k_means(cl_prop prop,
             img read_img);
+/* src/genetic/gn_main.c */
+extern void
+run_genetic(cl_prop prop,
+            img target);
 
 int main(int argc, char *argv[])
 {
-  const int pid = 1, did = 0;
+  const int pid = 0, did = 0;
   cl_prop prop;
   img read_img;
 
   srand((unsigned)time(NULL));
   /* 画像ファイル(PNG)の読み込み */
-  pnread("imgs/img02.png", &read_img);
+  pnread("imgs/img00.png", &read_img);
   //save_csv("img00.csv", read_img);
 
   /* Kernelコードの読み込み */
@@ -31,6 +36,7 @@ int main(int argc, char *argv[])
   set_kernels(did, &prop);
 
   run_k_means(prop, read_img);
+  run_genetic(prop, read_img);
 
   /* OpenCLプロパティの解放 */
   release_cl_properties(&prop);
