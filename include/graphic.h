@@ -3,7 +3,9 @@
 
 #define GDEBUG
 
+#ifndef CANVAS_H
 typedef unsigned char uchar;
+#endif
 
 typedef struct _img {
   size_t color_type;

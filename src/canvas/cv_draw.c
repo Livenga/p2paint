@@ -4,6 +4,7 @@
 #include "../../include/graphic.h"
 #include "../../include/canvas.h"
 
+#if 0
 void
 draw_circuit(int x0,
              int y0,
@@ -50,3 +51,51 @@ draw_circuit(int x0,
     }
   }
 }
+#else
+void
+draw_circuit(int x0,
+             int y0,
+             int r,
+             canvas *cv,
+             canvas cv_target) {
+  int i, j, x, y;
+  int dx, dy, out_x, out_y;
+  int value, cv_pos, target_pos;
+
+  dx = rand() % cv_target.width;
+  dy = rand() % cv_target.height;
+
+  for(i = -r; i < r; i++) {
+        y = y0 + i;
+    out_y = dy + i;
+
+    for(j = -r; j < r; j++) {
+          x = x0 + j;
+      out_x = dx + j;
+
+      value  = i * i + j * j;
+      cv_pos = y * cv_target.width + x;
+      target_pos = out_y * cv_target.width + out_x;
+
+      if(value <= (r * r) &&
+          x > -1 && y > -1 &&
+          x < cv_target.width && y < cv_target.height &&
+          (out_x) > -1 && (out_y) > -1 &&
+          (out_x) < cv_target.width && (out_y) < cv_target.height
+          ) {
+        cv->data[cv_pos * 3 + 0] = cv_target.data[target_pos * 3 + 0];
+        cv->data[cv_pos * 3 + 1] = cv_target.data[target_pos * 3 + 1];
+        cv->data[cv_pos * 3 + 2] = cv_target.data[target_pos * 3 + 2];
+      }
+#if 0
+      else {
+        cv->data[cv_pos * 3 + 0] = 0xFF;
+        cv->data[cv_pos * 3 + 1] = 0xFF;
+        cv->data[cv_pos * 3 + 2] = 0xFF;
+      }
+#endif
+
+    }
+  }
+}
+#endif

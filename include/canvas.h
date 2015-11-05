@@ -1,7 +1,10 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
+#ifndef GRAPHIC_H
 typedef unsigned char uchar;
+#endif
+
 typedef struct _canvas {
   size_t width, height, colors;
   uchar *data;
@@ -19,6 +22,8 @@ cv_finish_init(canvas cv);
 extern void
 release_canvas(int population,
                canvas *cv);
+extern void
+free_canvas(canvas *cv);
 
 extern int
 pnwrite_from_canvas(const char *path,

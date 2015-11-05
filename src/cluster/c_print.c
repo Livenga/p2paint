@@ -8,7 +8,7 @@ void cluster_print(const int k,
   int i;
   for(i = 0; i < k; i++) {
     printf("Cluster No.%2d\n", i);
-    printf("R:G:B\t%3lu\t%3lu\t%3lu\n\n",
+    printf("[R:G:B]\t[%3lu:%3lu:%3lu]\n",
         _cluster[i].r, _cluster[i].g, _cluster[i].b);
   }
 }

@@ -1,7 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "../../include/graphic.h"
 #include "../../include/canvas.h"
+
+void
+img2canvas(img _img,
+           canvas *cv) {
+  int i;
+  int img_size = _img.width * _img.height * _img.colors;
+
+  cv->width  = _img.width;
+  cv->height = _img.height;
+  cv->colors = _img.colors;
+
+  cv->data = (uchar *)calloc(
+      img_size,
+      sizeof(uchar));
+  memmove((void *)cv->data, (const void *)_img.ldata,
+      img_size);
+}
 
 double cv_finish_init(canvas cv) {
   int i, j, k, position;
@@ -38,4 +57,17 @@ void release_canvas(int population,
   }
   free(cv);
   cv = NULL;
+}
+
+void free_canvas(canvas *cv) {
+  int i, j;
+
+  for(i = 0; i < cv->height; i++)
+    for(j = 0; j < cv->width; j++) {
+      cv->data[(i * cv->width + j) * 3 + 0] = '\0';
+      cv->data[(i * cv->width + j) * 3 + 1] = '\0';
+      cv->data[(i * cv->width + j) * 3 + 2] = '\0';
+    }
+  free(cv->data);
+  cv->data = NULL;
 }

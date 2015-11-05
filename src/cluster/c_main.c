@@ -6,8 +6,7 @@
 #include "../../include/opencl.h"
 #include "../../include/cluster.h"
 
-#define K 11
-//#define K 10
+//#define K 11
 #define MAX_RANGE 200
 
 /* src/graphic/g_write.c */
@@ -20,7 +19,9 @@ pnwrite_from_cluster(const char *path,
 
 void set_image_info(img _img, img_info *info);
 
-void run_k_means(cl_prop prop, img read_img) {
+ushort *run_k_means(const int K,
+                 cl_prop prop,
+                 img read_img) {
   const size_t img_size = read_img.width * read_img.height;
   int num_k = K, k;
 
@@ -83,17 +84,19 @@ void run_k_means(cl_prop prop, img read_img) {
       calc_cluster_center(k, read_img, (const ushort *)k2, &cls_k2[k]);
 
   } while(++count != MAX_RANGE);
+  printf("\033[1mSegmentation data No.%2d\033[0m\n", K);
   cluster_print(K, cls_k2);
+  putchar('\n');
 
+#ifdef SAVE_CLUSTER_IMAGE
   char image_path[1024];
   for(k = 0; k < K; k++) {
-    sprintf(image_path, "k_output/k%03d.png", k);
+    sprintf(image_path, "imgs/k_out/k%02d_%03d.png", K, k);
     pnwrite_from_dist(image_path, read_img.width, read_img.height, k,
         k2, read_img.data);
 
   }
-#if 1
-  sprintf(image_path, "cluster_k_%02d.png", K);
+  sprintf(image_path, "imgs/cluster/cluster_k_%02d.png", K);
   pnwrite_from_cluster(image_path, read_img.width, read_img.height,
       cls_k2, k2);
 #endif
@@ -103,7 +106,9 @@ void run_k_means(cl_prop prop, img read_img) {
   clReleaseMemObject(cl_cls_arg.cls_center);
   clReleaseMemObject(cl_cls_arg.dist);
   clReleaseMemObject(cl_cls_arg.data);
-  release_dist(read_img.width, read_img.height, k2);
+  //release_dist(read_img.width, read_img.height, k2);
+
+  return k2;
 }
 
 void set_image_info(img _img, img_info *info) {
