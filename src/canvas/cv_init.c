@@ -21,5 +21,7 @@ canvas cvalloc(int width,
   cv.data = (uchar *)calloc(
       width * height * colors,
       sizeof(uchar));
+  memset((void *)cv.data, 0xFF,
+      width * height * colors * sizeof(uchar));
   return cv;
 }

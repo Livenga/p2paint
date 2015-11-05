@@ -7,23 +7,43 @@
 #include "../../include/genetic.h"
 #include "../../include/canvas.h"
 
+/* src/canvas/cv_draw.c */
+extern void
+draw_circuit(int x0,
+             int y0,
+             int r,
+             canvas *cv,
+             img target);
+
 void run_genetic(cl_prop prop,
     img target) {
-  int i;
-  canvas *pr_canvas, *ch_canvas;
+  int i, R;
+  int x0, y0; // 円描画位置
+  canvas pr_canvas[POPULATION_SIZE], ch_canvas[CHILDREN_SIZE];
 
-  pr_canvas = (canvas *)calloc(POPULATION_SIZE, sizeof(canvas));
-  for(i = 0; i < POPULATION_SIZE; i++) { /* 個体集合の初期化 */
+  /* 個体集合の初期化 */
+  for(i = 0; i < POPULATION_SIZE; i++) 
     pr_canvas[i] = cvalloc(target.width, target.height, target.colors);
-  }
 
-  ch_canvas = (canvas *)calloc(CHILDREN_SIZE, sizeof(canvas));
-  for(i = 0; i < CHILDREN_SIZE; i++) /* 子個体集合領域の確保 */
+  /* 子個体集合領域の確保 */
+  for(i = 0; i < CHILDREN_SIZE; i++) 
     ch_canvas[i] = cvalloc(target.width, target.height, target.colors);
 
+  char output[1024];
+  for(i = 0; i < POPULATION_SIZE; i++) {
+    while(cv_finish_init(pr_canvas[i]) < 0.8) {
+      R = (rand() % 40) + 40 + 1;
+      x0 = rand() % target.width;
+      y0 = rand() % target.height;
+
+      draw_circuit(x0, y0, R, &pr_canvas[i], target);
+    }
+    sprintf(output, "canvas/canvas%03d.png", i);
+    pnwrite_from_canvas(output, pr_canvas[i]);
+  }
+
+
   /* Canvas領域の解放(後処理) */
-  //printf("%p\n", pr_canvas);
-  release_canvas(POPULATION_SIZE, pr_canvas);
-  //printf("%p\n", ch_canvas);
-  release_canvas(CHILDREN_SIZE, ch_canvas);
+  //release_canvas(POPULATION_SIZE, pr_canvas);
+  //release_canvas(CHILDREN_SIZE, ch_canvas);
 }

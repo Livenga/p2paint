@@ -3,6 +3,24 @@
 #include <string.h>
 #include "../../include/canvas.h"
 
+double cv_finish_init(canvas cv) {
+  int i, j, k, position;
+  int sum, count = 0;
+
+  for(i = 0; i < cv.height; i++) {
+    for(j = 0; j < cv.width; j++) {
+      position = i * cv.width + j;
+
+      sum = 0;
+      for(k = 0; k < cv.colors; k++)
+        sum += cv.data[position * 3 + k];
+      if(sum != (0xFF * 3)) ++count;
+    }
+  }
+
+  return (double)count / (cv.width * cv.height);
+}
+
 /* Canvas領域の解放 */
 void release_canvas(int population,
     canvas *cv) {
