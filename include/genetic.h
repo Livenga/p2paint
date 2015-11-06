@@ -2,7 +2,7 @@
 #define GENETIC_H
 
 /* 終了世代 */
-#define NUMBER_OF_GENERATION (10000)
+#define NUMBER_OF_GENERATION (100000)
 
 /* 個体, 子個体数 */
 #define POPULATION_SIZE (20)

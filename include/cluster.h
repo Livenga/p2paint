@@ -15,7 +15,7 @@ typedef struct _cluster {
 #include "graphic.h"
 #endif
 
-//#define SAVE_CLUSTER_IMAGE
+#define SAVE_CLUSTER_IMAGE
 
 typedef unsigned short ushort;
 

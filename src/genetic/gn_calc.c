@@ -14,11 +14,10 @@ calc_fitness(canvas input, /* 個体仮想Canvas */
   for(i = 0; i < input.height; i++) {
     for(j = 0; j < input.width; j++) {
       position = i * input.width + j;
-      diff     = 0.0;
       sum_diff = 0.0;
 
       for(k = 0; k < input.colors; k++) {
-        diff = input.data[position * 3 + k] - teach.data[position * 3 + k];
+        diff = (double)input.data[position * 3 + k] - teach.data[position * 3 + k];
         sum_diff += diff * diff;
       }
 

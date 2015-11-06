@@ -13,12 +13,13 @@ run_k_means(const int K,
 /* src/genetic/gn_main.c */
 extern void
 run_genetic(cl_prop prop,
+            const ushort **segment_data,
             img target,
             img paint);
 
 int main(int argc, char *argv[])
 {
-  const int pid = 1, did = 0;
+  const int pid = 0, did = 0;
   cl_prop prop;
   img read_img, paint_img;
 
@@ -27,9 +28,11 @@ int main(int argc, char *argv[])
 
   srand((unsigned)time(NULL));
   /* 画像ファイル(PNG)の読み込み */
-  pnread("imgs/img04.png", &read_img);
-  pnread("imgs/holy_night.png", &paint_img);
-  //save_csv("img00.csv", read_img);
+  //pnread("imgs/img00.png", &read_img);
+  pnread("imgs/img06.png", &read_img);
+  //pnread("imgs/shout.png", &paint_img);
+  pnread("imgs/img00.png", &paint_img);
+  save_csv("img00.csv", read_img);
 
   /* Kernelコードの読み込み */
   get_kernel_paths("src/kernel", &prop.code);
@@ -43,11 +46,14 @@ int main(int argc, char *argv[])
 
   /* 画像分割データの取得 */
   int i;
-  segment_data = (ushort **)calloc(10, sizeof(ushort *));
+  segment_data =
+    (ushort **)calloc(10, sizeof(ushort *));
   for(i = 2; i < 11; i++)
-    segment_data[i - 2] = run_k_means(i, prop, read_img);
+    segment_data[i - 2] =
+      run_k_means(i, prop, read_img);
 
-  run_genetic(prop, read_img, paint_img);
+  run_genetic(prop, (const ushort **)segment_data,
+      read_img, paint_img);
 
   /* OpenCLプロパティの解放 */
   release_cl_properties(&prop);
@@ -56,7 +62,10 @@ int main(int argc, char *argv[])
 
   /* 分割データ解放 */
   for(i = 2; i < 11; i++)
-    release_dist(read_img.width, read_img.height, segment_data[i - 2]);
+    release_dist(
+        read_img.width,
+        read_img.height,
+        segment_data[i - 2]);
 
   return 0;
 }
