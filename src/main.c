@@ -28,10 +28,8 @@ int main(int argc, char *argv[])
 
   srand((unsigned)time(NULL));
   /* 画像ファイル(PNG)の読み込み */
-  pnread("kan/haruna.png", &read_img);
-  //pnread("kan/fubuki.png", &paint_img);
-  //pnread("imgs/img05_50.png", &read_img);
-  pnread("imgs/img06.png", &paint_img);
+  pnread("imgs/img00.png", &read_img);
+  pnread("imgs/shout.png", &paint_img);
   //save_csv("img00.csv", read_img);
 
   /* Kernelコードの読み込み */

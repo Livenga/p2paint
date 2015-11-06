@@ -71,8 +71,10 @@ run_genetic(cl_prop prop,
        * !!! 修正完了 !!! */
       draw_circuit(R / 2, &pr_canvas[i], cv_paint);
     }
+#if 0
     sprintf(output, "imgs/canvas/canvas%03d.png", i);
     pnwrite_from_canvas(output, pr_canvas[i]);
+#endif
 
     pr_fitness[i] = calc_fitness(
         cv_target, pr_canvas[i]);
